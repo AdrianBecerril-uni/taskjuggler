@@ -216,7 +216,7 @@ task tmobile "Mobile Front End" {
   task tMDev "Mobile Front End Development" {
       effort 15d
       allocate dev2, dev3
-      depends tMDesign
+      depends tmobile.tMDesign
   }
   task tMTest "Mobile Front End Test" {
       effort 4d
@@ -224,6 +224,7 @@ task tmobile "Mobile Front End" {
       depends tMDev
   }
 }
+
 
 # TAREA DE PRIMER NIVEL: SOPORTE AL DESPLIEGUE EN LA NUBE DEL BACK END
 task tCloudSupport "Cloud Deployment Support" {
