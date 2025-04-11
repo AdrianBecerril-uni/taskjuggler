@@ -71,8 +71,9 @@ resource dev3 "Peter Green" {
 # Me añado a mí mismo, realizando 4 horas diarias.
 resource yo "Adrián Becerril" {
   email "873026@unizar.es"
-  availability 4h
+  units 0.5
 }
+
 
 # Now we specify the work packages. The whole project is described as
 # a task that contains subtasks. These subtasks are then broken down
