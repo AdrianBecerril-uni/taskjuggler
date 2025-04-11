@@ -71,15 +71,9 @@ resource dev3 "Peter Green" {
 # Me añado a mí mismo, realizando 4 horas diarias.
 resource yo "Adrián Becerril" {
   email "873026@unizar.es"
-  workinghours {
-    mon 4h;
-    tue 4h;
-    wed 4h;
-    thu 4h;
-    fri 4h;
-    sat 0h;
-    sun 0h;
-  }
+  # Ejemplo: 4 horas diarias de 09:00 a 13:00, de lunes a viernes
+  workinghours mon - fri 09:00 - 13:00
+  workinghours sat - sun off
 }
 
 
