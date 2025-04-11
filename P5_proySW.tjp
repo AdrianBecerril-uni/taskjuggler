@@ -218,10 +218,10 @@ task tmobile "Mobile Front End" {
       allocate dev2, dev3
       depends tmobile.tMDesign
   }
-  task tMTest "Mobile Front End Test" {
+    task tMTest "Mobile Front End Test" {
       effort 4d
       allocate dev1
-      depends tMDev
+      depends tmobile.tMDev
   }
 }
 
