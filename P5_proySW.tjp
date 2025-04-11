@@ -242,7 +242,6 @@ task tCloudSupport "Cloud Deployment Support" {
       effort 7d
       allocate dev1, dev2
       depends tCloudSupport.tCloudEval
-      depends WMGame.tback.tbackDev
   }
 }
 
