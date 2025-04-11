@@ -19,7 +19,7 @@ project pSix "Web Game"  2024-12-15 +5m {
   # the project reports. If not specified, the current day will be
   # used, but this will likely be outside of the project range, so it
   # can't be seen in the reports.
-  now 2025-02-25-13:00
+  now 2025-04-11-13:00
   # The currency for all money values is the US Dollar.
   currency "EUR"
 
@@ -67,6 +67,11 @@ resource dev2 "Samantha Müller" {
 }
 resource dev3 "Peter Green" {
   email "kkk@unizar.es"
+}
+# Me añado a mí mismo, realizando 4 horas diarias.
+resource yo "Adrián Becerril" {
+  email "873026@unizar.es"
+  availability 4h
 }
 
 # Now we specify the work packages. The whole project is described as
@@ -117,6 +122,12 @@ task WMGame "Web & Mobile Game" {
       effort 20d
       allocate dev1, dev2
       depends WMGame.tback.tlogic
+      # Incidencia registrada en la fecha actual (2025-04-11)
+      journalentry 2025-04-11 "Problema detectado en la integración del módulo X" {
+        author dev1
+        alert yellow
+        summary "Se observó una discrepancia en la integración del módulo X, se procederá a revisar la configuración."
+      }
     }
   }
 
@@ -148,15 +159,18 @@ task WMGame "Web & Mobile Game" {
   }
 
   task ttest "Acceptance tests" {
+      start 2025-05-15
       effort 10d
       allocate boss
       allocate dev2
       actual:effort 20d
       depends WMGame.twebF
       depends WMGame.tback
-      }
+      depends tmobile.tMTest
+      depends tCloudSupport.tCloudDeploy
+  }
 
-    
+
   task deliveries "Milestones" {
 
     # Some milestones have customer payments associated with them. We
@@ -184,10 +198,48 @@ task WMGame "Web & Mobile Game" {
   }
 }
 
-# Now the project has been specified completely. Stopping here would
-# result in a valid TaskJuggler file that could be processed and
-# scheduled. But no reports would be generated to visualize the
-# results.
+# TAREA DE PRIMER NIVEL: DESARROLLO DE LA VERSIÓN MÓVIL DEL FRONT END
+task tmobile "Mobile Front End" {
+  purge chargeset
+  chargeset mFront
+  responsible dev3
+  depends WMGame.tgdesign
+  
+  task tMDesign "Mobile Front End Design" {
+      effort 8d
+      allocate dev3, yo
+  }
+  task tMDev "Mobile Front End Development" {
+      effort 15d
+      allocate dev2, dev3
+      depends tMDesign
+  }
+  task tMTest "Mobile Front End Test" {
+      effort 4d
+      allocate dev1
+      depends tMDev
+  }
+}
+
+# TAREA DE PRIMER NIVEL: SOPORTE AL DESPLIEGUE EN LA NUBE DEL BACK END
+task tCloudSupport "Cloud Deployment Support" {
+  purge chargeset
+  chargeset back
+  responsible dev1
+  depends WMGame.tback.tbackDev
+  
+  task tCloudEval "Cloud Platform Evaluation" {
+      effort 5d
+      allocate dev1, boss, yo
+      depends WMGame.tback.tBEd
+  }
+  task tCloudDeploy "Cloud Deployment" {
+      effort 7d
+      allocate dev1, dev2
+      depends tCloudEval
+      depends WMGame.tback.tbackDev
+  }
+}
 
 navigator navbar {
   hidereport @none
@@ -195,20 +247,17 @@ navigator navbar {
 
 macro TaskTip [
   tooltip istask() -8<-
-    '''Start: ''' <-query attribute='start'->
-    '''End: ''' <-query attribute='end'->
+    '''Start: ''' <-query attribute='start'-> 
+    '''End: ''' <-query attribute='end'-> 
     ----
     '''Resources:'''
-
-    <-query attribute='resources'->
+    <-query attribute='resources'-> 
     ----
     '''Precursors: '''
-
-    <-query attribute='precursors'->
+    <-query attribute='precursors'-> 
     ----
     '''Followers: '''
-
-    <-query attribute='followers'->
+    <-query attribute='followers'-> 
     ->8-
 ]
 
@@ -252,6 +301,15 @@ textreport frame "" {
     title "Resource Graph"
     center '<[report id="resourceGraph"]>'
   }
+}
+
+# Informe adicional: Planificación Inicial (Baseline)
+taskreport initialPlan "Initial Planning" {
+  scenarios plan
+  headline "Planificación Inicial del Proyecto"
+  columns bsi, name, start, end, effort, cost, revenue
+  timeformat "%Y-%m-%d"
+  loadunit days
 }
 
 # A traditional Gantt chart with a project overview.
