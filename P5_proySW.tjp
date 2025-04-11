@@ -72,9 +72,16 @@ resource dev3 "Peter Green" {
 resource yo "Adrián Becerril" {
   email "873026@unizar.es"
   workinghours {
-    default 4h
+    mon 4h;
+    tue 4h;
+    wed 4h;
+    thu 4h;
+    fri 4h;
+    sat 0h;
+    sun 0h;
   }
 }
+
 
 
 # Now we specify the work packages. The whole project is described as
