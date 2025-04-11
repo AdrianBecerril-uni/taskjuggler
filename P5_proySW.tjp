@@ -71,7 +71,9 @@ resource dev3 "Peter Green" {
 # Me añado a mí mismo, realizando 4 horas diarias.
 resource yo "Adrián Becerril" {
   email "873026@unizar.es"
-  load 0.5
+  workinghours {
+    default 4h
+  }
 }
 
 
